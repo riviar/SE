@@ -9,6 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -32,19 +34,32 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Solution.findByCapacity", query = "SELECT s FROM Solution s WHERE s.capacity = :capacity")})
 public class Solution implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID")
     private Integer id;
+    
     @Column(name = "AUTHORS")
     private String authors;
+    
+    @Column(name = "INSTANCE")
+    private String instance;
+    
+    @Column(name = "REFERENCE")
+    private String reference;
+    
     @Column(name = "DATE")
     @Temporal(TemporalType.DATE)
     private Date date;
+    
     @Column(name = "NUMBEROFVEHICLES")
     private Integer numberofvehicles;
+    
     @Column(name = "CAPACITY")
     private Integer capacity;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "solution", fetch = FetchType.EAGER)
     private Collection<Route> routeCollection;
 
@@ -106,6 +121,9 @@ public class Solution implements Serializable {
     
     public void addRoute(Route route) {
         this.routeCollection.add(route);
+        if (route.getSolution() != this) {
+            route.setSolution(this);
+        }
     }
     
 
@@ -131,7 +149,42 @@ public class Solution implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Solution[ id=" + id + " ]";
+        return "Solution"
+                + "\nInstance :" + instance
+                + "\nAuthors :" + authors
+                + "\nDate :" + date
+                + "\nReference: " + reference
+                + "\nVehicles: " + numberofvehicles
+                + "\nCapacity: " + capacity
+                + "\nRoutes:" + routeCollection.size();
     }
-    
+
+    /**
+     * @return the instance
+     */
+    public String getInstance() {
+        return instance;
+    }
+
+    /**
+     * @param instance the instance to set
+     */
+    public void setInstance(String instance) {
+        this.instance = instance;
+    }
+
+    /**
+     * @return the reference
+     */
+    public String getReference() {
+        return reference;
+    }
+
+    /**
+     * @param reference the reference to set
+     */
+    public void setReference(String reference) {
+        this.reference = reference;
+    }
+
 }

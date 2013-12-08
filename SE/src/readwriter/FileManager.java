@@ -5,9 +5,7 @@ import entity.Solution;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  *
@@ -59,26 +57,29 @@ public class FileManager {
         String[] instanceLines = dataInstance.split("\n");
         String tmp[];
         
+        tmp = solutionLines[0].split("Instance Name: "); 
+        solution.setInstance(tmp[1]);
+        
         tmp = solutionLines[1].split("Authors: "); 
         solution.setAuthors(tmp[1]);
         
         tmp = solutionLines[2].split("Date: ");      
         solution.setDate(new SimpleDateFormat("dd-MM-yyyy").parse(tmp[1]));
         
-        tmp = instanceLines[2].split(" ");
+        tmp = solutionLines[3].split("Reference: "); 
+        solution.setReference(tmp[1]);
+        
+        tmp = instanceLines[3].split(" ");
         solution.setNumberofvehicles(Integer.parseInt(tmp[0]));
-        solution.setCapacity(Integer.parseInt(tmp[1].substring(0, tmp[1].length()-1)));
+        solution.setCapacity(Integer.parseInt(tmp[1].substring(0, tmp[1].length() - 1)));
         
         
+        for (int i = 6; i < instanceLines.length; i++ ) {
+            Route route = new Route();
+            route.setData(instanceLines[i]);
+            solution.addRoute(route);
+        }
+
         return solution;
-
-
-    }
-
-    public Route getRoute() {
-        Route route = new Route();
-
-
-        return route;
     }
 }

@@ -1,5 +1,9 @@
 package readwriter;
 
+import entity.Route;
+import entity.Solution;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -29,16 +33,18 @@ public class DBManager {
      * Initialize class
      */
      void initialize() {
-        emf = javax.persistence.Persistence.createEntityManagerFactory("ConsolePU");
+        emf = javax.persistence.Persistence.createEntityManagerFactory("SEPU");
         em = emf.createEntityManager();
         et = em.getTransaction();
     }
-    public void create(Object object) {
+    public void create(Solution object) throws Exception {
         et.begin();
         em.persist(object);
         et.commit();
+
     }
-    public void save(Object object) {
+    public void save(Solution object) {
+        
         et.begin();
         em.merge(object);
         et.commit();
@@ -49,7 +55,7 @@ public class DBManager {
         return em;
     }
     
-    public void delete(Object obj) {
+    public void delete(Solution obj) {
         et.begin();
         em.remove(em.merge(obj));
         et.commit();

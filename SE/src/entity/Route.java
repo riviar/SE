@@ -1,10 +1,12 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -19,37 +21,28 @@ import javax.persistence.Table;
 @Table(name = "ROUTE")
 @NamedQueries({
     @NamedQuery(name = "Route.findAll", query = "SELECT r FROM Route r"),
-    @NamedQuery(name = "Route.findById", query = "SELECT r FROM Route r WHERE r.routePK.id = :id"),
+    @NamedQuery(name = "Route.findById", query = "SELECT r FROM Route r WHERE r.id = :id"),
     @NamedQuery(name = "Route.findByData", query = "SELECT r FROM Route r WHERE r.data = :data"),
-    @NamedQuery(name = "Route.findBySolutionId", query = "SELECT r FROM Route r WHERE r.routePK.solutionId = :solutionId")})
+    })
 public class Route implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected RoutePK routePK;
+    
+    @Id
+    @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
+    private Integer id;
+    
     @Column(name = "DATA")
     private String data;
-    @JoinColumn(name = "SOLUTION_ID", referencedColumnName = "ID", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    
+    @JoinColumn(name = "SOLUTION_ID", referencedColumnName = "ID")
+    @ManyToOne(optional = false)
     private Solution solution;
 
     public Route() {
     }
 
-    public Route(RoutePK routePK) {
-        this.routePK = routePK;
-    }
-
-    public Route(int id, int solutionId) {
-        this.routePK = new RoutePK(id, solutionId);
-    }
-
-    public RoutePK getRoutePK() {
-        return routePK;
-    }
-
-    public void setRoutePK(RoutePK routePK) {
-        this.routePK = routePK;
-    }
 
     public String getData() {
         return data;
@@ -65,12 +58,15 @@ public class Route implements Serializable {
 
     public void setSolution(Solution solution) {
         this.solution = solution;
+        if (!solution.getRouteCollection().contains(this)){
+            solution.getRouteCollection().add(this);
+        }
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (routePK != null ? routePK.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
@@ -81,7 +77,7 @@ public class Route implements Serializable {
             return false;
         }
         Route other = (Route) object;
-        if ((this.routePK == null && other.routePK != null) || (this.routePK != null && !this.routePK.equals(other.routePK))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -89,7 +85,7 @@ public class Route implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Route[ routePK=" + routePK + " ]";
+        return "entity.Route[ routePK]";
     }
     
 }
