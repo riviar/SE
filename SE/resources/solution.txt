@@ -1,0 +1,8 @@
+Instance Name: C1_8_2
+Authors: Author name, Author surname
+Date: 11-11-2003
+Reference: Reference name
+Solution
+Route 1 : 394 511 762 290 423 80 428 236 472 26 591 525 257
+Route 2 : 129 27 134 786 187 192 11 448 2 87 86 104 717 419
+Route 3 : 277 377 235 800 702 114 518 240 360 425 146 392 

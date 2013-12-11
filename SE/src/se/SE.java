@@ -1,8 +1,10 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package se;
+
+
+import entity.Route;
+import entity.Solution;
+import readwriter.DBManager;
+import readwriter.FileManager;
 
 /**
  *
@@ -13,7 +15,14 @@ public class SE {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) throws Exception {
+        FileManager fileManager = new FileManager();
+        fileManager.readFileSolution("resources/solution.txt");
+        fileManager.readFileInstance("resources/instance.txt");
+        Solution solution = fileManager.getSolution();
+        
+        DBManager db = new DBManager();
+        db.create(solution);
+        
     }
 }
