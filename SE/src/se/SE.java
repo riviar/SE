@@ -3,6 +3,7 @@ package se;
 
 import entity.Route;
 import entity.Solution;
+import gui.SEFrame;
 import readwriter.DBManager;
 import readwriter.FileManager;
 
@@ -23,6 +24,9 @@ public class SE {
         
         DBManager db = new DBManager();
         db.create(solution);
+        
+        SEFrame frame = new SEFrame();
+        
         
     }
 }

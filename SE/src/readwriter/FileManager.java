@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import tools.Validator;
 
 /**
  *
@@ -15,6 +16,11 @@ public class FileManager {
 
     String dataSolution = null;
     String dataInstance = null;
+    Validator validator;
+    
+    public FileManager(){
+        validator = new Validator();
+    }
     
     public void readFileInstance(String filename) {
         String content = null;
@@ -43,7 +49,12 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        dataSolution =  content;
+        if (validator.checkSolution(content)) {
+            dataSolution =  content;
+        } else {
+            System.err.println("Dupa");
+        }
+        
     }
 
     

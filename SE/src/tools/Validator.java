@@ -25,8 +25,8 @@ public class Validator {
     private String[] reference ;
     private String[] routes ;
     
-    private String instanceNamePattern = "#Instance Name://s*([a-zA-Z0-9_-//s]+)/s*#" ;
-    private String authorsPattern = "#Authors://s*([a-zA-Z0-9//s-,]+)//s*#" ;
+    private String instanceNamePattern = "#Instance Name://s*([a-zA-Z0-9_//-//s]+)/s*#" ;
+    private String authorsPattern = "#Authors://s*([a-zA-Z0-9//s//-//,]+)//s*#" ;
     private String datePattern = "#Date://s*(//d{2}-//d{2}-//d{2})//s*#" ;
     private String referencePattern = "#Reference://s*([a-zA-Z0-9_-]+)//s*" ;
     private String routePattern = "#Route//s*(//d+)//s*://s*([0-9//s]+)#" ;
