@@ -37,7 +37,7 @@ public class FileManager {
         dataInstance =  content;
     }
     
-    public void readFileSolution(String filename) {
+    public void readFileSolution(String filename) throws Exception {
         String content = null;
         File file = new File(filename);
         try {
@@ -52,7 +52,7 @@ public class FileManager {
         if (validator.checkSolution(content)) {
             dataSolution =  content;
         } else {
-            System.err.println("Dupa");
+            throw new Exception("Dupa");
         }
         
     }

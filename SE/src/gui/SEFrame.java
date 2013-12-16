@@ -5,6 +5,7 @@
  */
 
 package gui;
+import entity.Solution;
 import java.util.List;
 import java.util.LinkedList;
 import java.io.File;
@@ -12,14 +13,18 @@ import java.io.IOException;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListModel;
 import org.apache.commons.io.FileUtils;
+import readwriter.DBManager;
+import readwriter.FileManager;
 /**
  *
  * @author acer
  */
 public class SEFrame extends javax.swing.JFrame {
 
+    FileManager fileManager = new FileManager();
     private File instance;
     private File solution;
     private String log;
@@ -209,6 +214,7 @@ public class SEFrame extends javax.swing.JFrame {
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             instance = fc.getSelectedFile();
+            fileManager.readFileInstance(instance.getPath());
             logTextArea.append("Opening: " + instance.getName() + ".\n");
         } else {
             logTextArea.append("Open command cancelled by user.\n");
@@ -219,11 +225,20 @@ public class SEFrame extends javax.swing.JFrame {
         JFileChooser fc = new JFileChooser();
         int returnVal = fc.showOpenDialog(this);
 
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            solution = fc.getSelectedFile();
-            logTextArea.append("Opening: " + solution.getName() + ".\n");
-        } else {
-            logTextArea.append("Open command cancelled by user.\n");
+        try {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                solution = fc.getSelectedFile();
+                fileManager.readFileSolution(solution.getPath());
+                logTextArea.append("Opening: " + solution.getName() + ".\n");
+            } else {
+                logTextArea.append("Open command cancelled by user.\n");
+            }
+        }
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error message: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_loadSolutionMenuItemActionPerformed
 
@@ -245,9 +260,16 @@ public class SEFrame extends javax.swing.JFrame {
             }
             instanceDataList.setModel(instanceModel);
             solutionDataList.setModel(solutionModel);
+            Solution solution = fileManager.getSolution();
+        
+            DBManager db = new DBManager();
+            db.create(solution);
         }
-        catch (IOException e) {
-            
+        catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                "Error message: " + e.getMessage(),
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_processButtonActionPerformed
 
